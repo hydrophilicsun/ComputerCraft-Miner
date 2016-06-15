@@ -23,6 +23,7 @@ p=peripheral.wrap("left")
 		"Find emerald at ",
 		"Find monster spawner at ",
 	}
+	turtle_inventory = {"","","","","","","","","","","","","","","",""}
 --array define area end
 
 --var define area start
@@ -458,4 +459,16 @@ for i = 1, 1 do
 	turtle.turnLeft()
 	turtle.turnLeft()
 	go(5)
+end
+
+
+function updateInventory()
+	for i = 1, table.getn(turtle_inventory) do
+		data = turtle.getItemDetail(i)
+		if data == nil then
+			turtle_inventory[i] = "0"
+		else
+			turtle_inventory[i] = turtle.getItemDetail(i).name
+		end
+	end
 end
