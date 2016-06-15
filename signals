@@ -1,0 +1,24 @@
+local arg = { ... }
+
+function whichside(side)
+	if side == "right" then
+		print(redstone.getInput(side))
+		return redstone.getInput(side)
+	end
+	if side == "front" then
+		print(redstone.getInput(side))
+		return redstone.getInput(side)
+	end
+	if side == "left" then
+		print(redstone.getInput(side))
+		return redstone.getInput(side)
+	end
+	if side == "back" then
+		print(redstone.getInput(side))
+		return redstone.getInput(side)
+	end
+
+end
+
+os.run( {},"wheresig")
+whichside(arg[1])

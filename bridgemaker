@@ -1,0 +1,13 @@
+i = 0
+while i < 80 do 
+  if turtle.detectDown() == false then
+    turtle.placeDown()
+  end
+  turtle.turnRight()
+  if turtle.detect() == false then
+    turtle.place()
+  end
+  turtle.turnLeft()
+  turtle.forward()
+  i = i +1
+end

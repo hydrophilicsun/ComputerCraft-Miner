@@ -1,0 +1,179 @@
+
+p=peripheral.wrap("left")
+startingFuelLevel = turtle.getFuelLevel()
+fuelLevelRemaining = startingFuelLevel
+stepsForward = 0
+groundLevel = true
+
+function startTunnel()
+	-- placeRedstoneOnRight()	
+	-- print(isRedstoneOnSide("right"))
+	while isSafeToGo() do
+		sixBlocks()
+		print("Am I on the groundlevel?:")
+		print(groundlevel)
+		print("My stepsForward is:")
+		print(stepsForward)
+		print("This is my fuelLevelRemaining:")
+		print(fuelLevelRemaining)
+		print("\n\n")
+	end
+	returnHome()
+end
+
+function checkForRedstone()
+	while true do
+		inventory_details = turtle.getItemDetail(16)
+		if inventory_details.name == "minecraft:redstone_torch" then
+			return true
+		else
+			print("Please insert a redstone torch to my slot 16")
+		end
+		sleep(3)
+	end
+end
+
+function placeRedstoneOnRight()
+	checkForRedstone()
+	turtle.turnRight()
+	if turtle.detect() == true then
+		p.dig()
+		turtle.select(16) --select the redstone torch
+		turtle.place()
+		turtle.turnLeft()
+	else
+		turtle.select(16) --select the redstone torch
+		turtle.place()
+		turtle.turnLeft()
+	end
+end
+
+function isRedstoneOnSide(side)
+	if redstone.getInput(side) then
+		return true
+	else
+		return false
+	end
+end
+	
+function isSafeToGo()
+	if fuelLevelRemaining > stepsForward + 1 then -- plus 1 in case not groundLevel
+		return true
+	else
+		return false
+	end
+
+end
+
+--
+-- digging stuff
+-- 
+function sixBlocks()
+	digInFront()
+	forward()
+	rack()
+	switchLevel()
+	rack()
+	switchLevel()
+end
+
+function rack()
+	checkFloorOrCeiling()
+	digInFront()
+	left()
+	digInFront()
+	right()
+	right()
+	digInFront()
+	left()
+end
+
+function switchLevel()
+	if groundLevel then
+		up()
+		groundLevel = false
+	else
+		down()
+		groundLevel = true
+	end
+
+end
+
+function digInFront()
+	while turtle.detect() == true do
+		p.dig()
+		sleep(1)
+	end
+end
+
+function left()
+	turtle.turnLeft()
+end
+
+function right()
+	turtle.turnRight()
+end
+
+function up()
+	if isSafeToGo() then
+		fuelLevelRemaining = fuelLevelRemaining - 1
+		while turtle.detectUp() == true do
+			p.digUp()
+			sleep(1)
+		end
+		turtle.up()
+	else
+		returnHome()
+	end
+end
+
+function down()
+	if isSafeToGo() then
+		fuelLevelRemaining = fuelLevelRemaining - 1
+		turtle.down()
+	else
+		returnHome()
+	end
+end
+
+function forward()
+	if isSafeToGo() then
+		fuelLevelRemaining = fuelLevelRemaining - 1
+		stepsForward = stepsForward + 1
+		digInFront()
+		turtle.forward()
+	else
+		returnHome()
+	end
+end
+
+function returnHome()
+	right()
+	right()
+	i = stepsForward
+	while i > 0 do
+		turtle.forward()
+		i = i -1
+	end
+end
+
+function checkFloorOrCeiling()
+	if groundLevel == true then
+		if turtle.detectDown() == false then
+			turtle.select(1)
+			turtle.placeDown()
+			sleep(.5)
+			while turtle.detectUp() == true do
+				p.digUp()
+				sleep(1)
+			end
+		end
+	else
+		if turtle.detectUp() == false then
+			turtle.select(1)
+			turtle.placeUp()
+		end
+	end
+end
+
+startTunnel()
