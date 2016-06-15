@@ -7,6 +7,9 @@ p=peripheral.wrap("left")
 		"minecraft:gold_ore",
 		"minecraft:lapis_ore",
 		"minecraft:quartz_ore",
+		"ThermalFoundation:Ore", 
+		"TConstruct:SearedBrick", -- ThermalFoundation:Ore === Copper, Tin, Silver, Lead, Ferrous, Shiny, Mana Infused 
+		"Forestry:resources", -- Apatite, Copper, Tin
 	}
 
 	local special = {
