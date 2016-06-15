@@ -203,7 +203,7 @@ p=peripheral.wrap("left")
 			if success then --compare block data
 				for i = 1, table.getn(special) do
 					if data.name == special[i] then
-						asmsg = smsg[i].."x:"..x.." y:"..y.." z:"..z
+						asmsg = ""..data.name.."  x:"..x.." y:"..y.." z:"..z
 						alert(asmsg)
 						asmsg = "nil"
 						return "special"
@@ -212,7 +212,7 @@ p=peripheral.wrap("left")
 				
 				for i = 1, table.getn(mineral) do
 					if data.name == mineral[i] then
-						asmsg = smsg[i].."x:"..x.." y:"..y.." z:"..z
+						asmsg = ""..data.name.."  x:"..x.." y:"..y.." z:"..z
 						alert(asmsg)
 						asmsg = "nil"
 						return true
@@ -231,7 +231,7 @@ p=peripheral.wrap("left")
 			if success then --compare block data
 				for i = 1, table.getn(special) do
 					if data.name == special[i] then
-						asmsg = smsg[i].."x:"..x.." y:"..y.." z:"..z
+						asmsg = ""..data.name.."  x:"..x.." y:"..y.." z:"..z
 						alert(asmsg)
 						asmsg = "nil"
 						return "special"
@@ -256,7 +256,7 @@ p=peripheral.wrap("left")
 			if success then --compare block data
 				for i = 1, table.getn(special) do
 					if data.name == special[i] then
-						asmsg = smsg[i].."x:"..x.." y:"..y.." z:"..z
+						asmsg = ""..data.name.."  x:"..x.." y:"..y.." z:"..z
 						alert(asmsg)
 						asmsg = "nil"
 						return "special"
