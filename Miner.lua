@@ -1,3 +1,4 @@
+p=peripheral.wrap("left")
 --array define area start
 	local mineral = {
 		"minecraft:coal_ore",
@@ -64,7 +65,7 @@
 		if side == 0 then
 			xyz(0)
 			while not turtle.forward() do
-				turtle.dig()
+				p.dig()
 			end
 		end
 		
@@ -72,7 +73,7 @@
 			turtle.turnLeft()
 			xyz(1)
 			while not turtle.forward() do
-				turtle.dig()
+				p.dig()
 			end
 			turtle.turnRight()
 		end
@@ -82,7 +83,7 @@
 			while not turtle.back() do
 				turtle.turnLeft()
 				turtle.turnLeft()
-				turtle.dig()
+				p.dig()
 				turtle.turnRight()
 				turtle.turnRight()
 				turtle.turnRight()
@@ -93,7 +94,7 @@
 			turtle.turnRight()
 			xyz(3)
 			while not turtle.forward() do
-				turtle.dig()
+				p.dig()
 			end
 			turtle.turnLeft()
 		end
@@ -101,14 +102,14 @@
 		if side == 4 then
 			xyz(4)
 			while not turtle.up() do
-				turtle.digUp()
+				p.digUp()
 			end
 		end
 		
 		if side == 5 then
 			xyz(5)
 			while not turtle.down() do
-				turtle.digDown()
+				p.digDown()
 			end
 		end
 	end
@@ -277,35 +278,35 @@
 
 	function dig(side)
 		if side == 0 then
-			turtle.dig()
+			p.dig()
 		end
 		
 		if side == 1 then
 			turtle.turnLeft()
-			turtle.dig()
+			p.dig()
 			turtle.turnRight()
 		end
 		
 		if side == 2 then
 			turtle.turnLeft()
 			turtle.turnLeft()
-			turtle.dig()
+			p.dig()
 			turtle.turnRight()
 			turtle.turnRight()
 		end
 		
 		if side == 3 then
 			turtle.turnRight()
-			turtle.dig()
+			p.dig()
 			turtle.turnLeft()
 		end
 		
 		if side == 4 then
-			turtle.digUp()
+			p.digUp()
 		end
 		
 		if side == 5 then
-			turtle.digDown()
+			p.digDown()
 		end
 	end
 
