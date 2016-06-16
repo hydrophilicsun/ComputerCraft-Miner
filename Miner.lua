@@ -121,12 +121,6 @@ end
 function checkThenDig(direction)
 	updateInventory()
 
-	--only tempo
-	for i = 1, table.getn(turtle_inventory) do
-		print(turtle_inventory[i])
-	end
-	-- flaksdjflk
-
 	success, block_in_front_data = directionalInspector(direction)
 	if success == true then
 		for i = 1, table.getn(turtle_inventory) do
@@ -138,6 +132,7 @@ function checkThenDig(direction)
 					local num_of_empty_slot = findEmptySlot() 
 					if num_of_empty_slot == false then
 						dropIntoChest()
+						break
 					else
 						turtle.select(num_of_empty_slot)
 					end
