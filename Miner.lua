@@ -23,6 +23,13 @@ p=peripheral.wrap("left")
 		"Find emerald at ",
 		"Find monster spawner at ",
 	}
+
+	local equivalent_minerals = {
+		["minecraft:stone"] = "minecraft:cobblestone",
+		["minecraft:coal_ore"] 	= "minecraft:coal",
+
+}
+
 	turtle_inventory = {"","","","","","","","","","","","","","","",""}
 --array define area end
 
@@ -65,11 +72,103 @@ p=peripheral.wrap("left")
 			0:around	1:up	2:down
 	]]
 
+function dropIntoChest()
+	turtle.refuel()
+	turtle.select(16)
+	p.dig()
+	turtle.place()
+	for i =3, 16 do
+		turtle.select(i)
+		turtle.drop()
+	end
+	turtle.select(16)
+	p.dig()
+	turtle.select(2)
+	alert("  Just dropped stuff off!")
+end
+
+
+function updateInventory()
+	for i = 1, table.getn(turtle_inventory) do
+		data = turtle.getItemDetail(i)
+		if data == nil then
+			turtle_inventory[i] = "0"
+		else
+			turtle_inventory[i] = turtle.getItemDetail(i).name
+		end
+	end
+end
+
+function findEmptySlot()
+	for i = 1, 16 do
+		if turtle.getItemCount == 0 then
+			return i
+		end
+	end
+	return false
+end
+
+function directionalInspector(direction)
+	if direction == "forward" then
+		return turtle.inspect()
+	elseif direction == "down" then
+		return turtle.inspectDown()
+	elseif direction == "up" then
+		return turtle.inspectUp()
+	end
+end
+
+function checkThenDig(direction)
+	updateInventory()
+
+	--only tempo
+	for i = 1, table.getn(turtle_inventory) do
+		print(turtle_inventory[i])
+	end
+	-- flaksdjflk
+
+	success, block_in_front_data = directionalInspector(direction)
+	if success == true then
+		for i = 1, table.getn(turtle_inventory) do
+			if block_in_front_data.name == turtle_inventory[i] or equivalent_minerals[block_in_front_data.name] == turtle_inventory[i]then
+				if turtle.getItemCount(i) < 64 then
+					turtle.select(i)
+					break
+				else
+					local num_of_empty_slot = findEmptySlot() 
+					if num_of_empty_slot == false then
+						dropIntoChest()
+					else
+						turtle.select(num_of_empty_slot)
+					end
+				end
+
+			else
+				local num_of_empty_slot = findEmptySlot() 
+				if num_of_empty_slot == false then
+					dropIntoChest()
+				else
+					turtle.select(num_of_empty_slot)
+				end
+			end
+		end
+	end
+	if direction == "forward" then
+		p.dig()
+	elseif direction == "down" then
+		p.digDown()
+	elseif direction == "up" then
+		p.digUp()
+	end
+
+end
+
+
 	function go(side)
 		if side == 0 then
 			xyz(0)
 			while not turtle.forward() do
-				p.dig()
+				checkThenDig("forward")
 			end
 		end
 		
@@ -77,7 +176,7 @@ p=peripheral.wrap("left")
 			turtle.turnLeft()
 			xyz(1)
 			while not turtle.forward() do
-				p.dig()
+				checkThenDig("forward")
 			end
 			turtle.turnRight()
 		end
@@ -87,7 +186,7 @@ p=peripheral.wrap("left")
 			while not turtle.back() do
 				turtle.turnLeft()
 				turtle.turnLeft()
-				p.dig()
+				checkThenDig("forward")
 				turtle.turnRight()
 				turtle.turnRight()
 				turtle.turnRight()
@@ -98,7 +197,7 @@ p=peripheral.wrap("left")
 			turtle.turnRight()
 			xyz(3)
 			while not turtle.forward() do
-				p.dig()
+				checkThenDig("forward")
 			end
 			turtle.turnLeft()
 		end
@@ -106,14 +205,14 @@ p=peripheral.wrap("left")
 		if side == 4 then
 			xyz(4)
 			while not turtle.up() do
-				p.digUp()
+				checkThenDig("up")
 			end
 		end
 		
 		if side == 5 then
 			xyz(5)
 			while not turtle.down() do
-				p.digDown()
+				checkThenDig("down")
 			end
 		end
 	end
@@ -282,35 +381,35 @@ p=peripheral.wrap("left")
 
 	function dig(side)
 		if side == 0 then
-			p.dig()
+			checkThenDig("forward")
 		end
 		
 		if side == 1 then
 			turtle.turnLeft()
-			p.dig()
+			checkThenDig("forward")
 			turtle.turnRight()
 		end
 		
 		if side == 2 then
 			turtle.turnLeft()
 			turtle.turnLeft()
-			p.dig()
+			checkThenDig("forward")
 			turtle.turnRight()
 			turtle.turnRight()
 		end
 		
 		if side == 3 then
 			turtle.turnRight()
-			p.dig()
+			checkThenDig("forward")
 			turtle.turnLeft()
 		end
 		
 		if side == 4 then
-			p.digUp()
+			checkThenDig("up")
 		end
 		
 		if side == 5 then
-			p.digDown()
+			checkThenDig("down")
 		end
 	end
 
@@ -420,7 +519,6 @@ p=peripheral.wrap("left")
 
 for i = 1, 1 do
 	alert("Starting mining...")
-
 	for i = 1, times do
 		dig(0)
 		go(0)
@@ -462,13 +560,4 @@ for i = 1, 1 do
 end
 
 
-function updateInventory()
-	for i = 1, table.getn(turtle_inventory) do
-		data = turtle.getItemDetail(i)
-		if data == nil then
-			turtle_inventory[i] = "0"
-		else
-			turtle_inventory[i] = turtle.getItemDetail(i).name
-		end
-	end
-end
+
