@@ -101,7 +101,7 @@ end
 
 function findEmptySlot()
 	for i = 1, 16 do
-		if turtle.getItemCount == 0 then
+		if turtle.getItemCount(i) == 0 then
 			return i
 		end
 	end
@@ -118,36 +118,31 @@ function directionalInspector(direction)
 	end
 end
 
+function selectPopulatedStack()
+	for i = 1, table.getn(turtle_inventory) do
+			if block_in_front_data.name == turtle_inventory[i] or equivalent_minerals[block_in_front_data.name] == turtle_inventory[i] then
+				if turtle.getItemCount(i) < 64 then
+					turtle.select(i)
+					return
+				end
+			end
+	end
+	local num_of_empty_slot = findEmptySlot() 
+	if num_of_empty_slot == false then
+		dropIntoChest()
+	else
+		turtle.select(num_of_empty_slot)
+	end
+end
+
 function checkThenDig(direction)
 	updateInventory()
 
 	success, block_in_front_data = directionalInspector(direction)
 	if success == true then
-		for i = 1, table.getn(turtle_inventory) do
-			if block_in_front_data.name == turtle_inventory[i] or equivalent_minerals[block_in_front_data.name] == turtle_inventory[i]then
-				if turtle.getItemCount(i) < 64 then
-					turtle.select(i)
-					break
-				else
-					local num_of_empty_slot = findEmptySlot() 
-					if num_of_empty_slot == false then
-						dropIntoChest()
-						break
-					else
-						turtle.select(num_of_empty_slot)
-					end
-				end
-
-			else
-				local num_of_empty_slot = findEmptySlot() 
-				if num_of_empty_slot == false then
-					dropIntoChest()
-				else
-					turtle.select(num_of_empty_slot)
-				end
-			end
-		end
+		selectPopulatedStack()
 	end
+
 	if direction == "forward" then
 		p.dig()
 	elseif direction == "down" then
